@@ -12,3 +12,11 @@ general_log_file = "A:\Log.log"
 
 
 This above will log all the queries into the general_log_file(Log.log)
+
+What queries we need
+Create
+Alter
+Drop
+
+Following is the command to get all the queries for a particular database
+C:\Program Files\MySQL\MySQL Server 8.0\bin> .\mysqldump --complete-insert --create-options --events --quick -u root -p jainil > backup.sql
