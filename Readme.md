@@ -27,10 +27,9 @@ C:\Program Files\MySQL\MySQL Server 8.0\bin> .\mysqldump --complete-insert --cre
 
 
 FOLDER STURCTURE
-
-DATABASE FOLDER
+----------------------------------------------------------------------
+DATABASE_NAME ====> (Folder)
     |
-    |-> Structure ====> (Folder)
     |
     |-> Tables ====> (Folder)
     |       |
@@ -39,7 +38,25 @@ DATABASE FOLDER
     |       |       |
     |       |       |-> Datatime ( ISO 8601 ) .sql
     |
+----------------------------------------------------------------------
 
+=> How to scrapping is working
+1) Create Folder Structure: Ensure necessary folders are created.
+2) Read .sql File: Parse the .sql file content.
+3) Extract Structures: Identify and extract table creation statements.
+4) Extract Data: Identify and extract data insertion statements.
+5) Generate Timestamps: Create valid filenames using timestamps.
+6) Save Structures: Save table structures in the Structure folder.
+7) Save Data: Save table data in timestamped files within the Tables/Records/[table_name] ( and the table name is  ) folder.
+8) Run Script: Execute the main function to perform the entire process.
+9) Once scrapping is done, the folder structure will be created as mentioned above.
+10) The data will be stored in the respective folders.
+11) The main .sql file will be moved into the database folder.
+
+
+=> To run the script
+1) Open the terminal
+2) Just run the command `python scrapper.py`
 
 TODOs
 ====================
