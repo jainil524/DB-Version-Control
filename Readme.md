@@ -61,4 +61,4 @@ DATABASE_NAME ====> (Folder)
 TODOs
 ====================
 1) Discuss about what tech will be used in backend ( for efficiency purpose )
-2) 
+2) First compare the new file to old file in terms of file size if no change then dont add

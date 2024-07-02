@@ -1,13 +1,13 @@
--- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: book_sharing
 -- ------------------------------------------------------
--- Server version	10.4.32-MariaDB
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,12 +21,12 @@
 
 DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
-  `admin_id` int(60) NOT NULL AUTO_INCREMENT COMMENT 'This is admin id',
-  `admin_name` varchar(255) NOT NULL COMMENT 'this is admin name',
-  `admin_email` varchar(255) NOT NULL COMMENT 'This is admin email id',
-  `password` varchar(255) NOT NULL COMMENT 'this is admin password',
+  `admin_id` int NOT NULL AUTO_INCREMENT COMMENT 'This is admin id',
+  `admin_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'this is admin name',
+  `admin_email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'This is admin email id',
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'this is admin password',
   PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -47,21 +47,21 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `book_transaction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `book_transaction` (
-  `book_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'This is book id',
-  `book_name` varchar(255) NOT NULL COMMENT 'This is book name',
-  `book_price` int(255) NOT NULL COMMENT 'This is book price',
-  `book_category` int(60) NOT NULL,
-  `book_author` varchar(255) NOT NULL COMMENT 'This is book publisher name',
-  `book_coverpage` text DEFAULT NULL COMMENT 'This is image of book cover',
-  `book_publish_year` year(4) NOT NULL COMMENT 'This is book publish date',
-  `book_description` text NOT NULL COMMENT 'This is book description',
-  `seller_id` int(255) NOT NULL COMMENT 'This is seller id',
-  `buyer_id` int(11) DEFAULT NULL,
-  `delivery_guy_id` int(60) DEFAULT NULL,
-  `upload_time` datetime NOT NULL DEFAULT current_timestamp(),
-  `BookPin` int(6) DEFAULT NULL,
+  `book_id` int NOT NULL AUTO_INCREMENT COMMENT 'This is book id',
+  `book_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'This is book name',
+  `book_price` int NOT NULL COMMENT 'This is book price',
+  `book_category` int NOT NULL,
+  `book_author` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'This is book publisher name',
+  `book_coverpage` text COLLATE utf8mb4_general_ci COMMENT 'This is image of book cover',
+  `book_publish_year` year NOT NULL COMMENT 'This is book publish date',
+  `book_description` text COLLATE utf8mb4_general_ci NOT NULL COMMENT 'This is book description',
+  `seller_id` int NOT NULL COMMENT 'This is seller id',
+  `buyer_id` int DEFAULT NULL,
+  `delivery_guy_id` int DEFAULT NULL,
+  `upload_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `BookPin` int DEFAULT NULL,
   PRIMARY KEY (`book_id`),
   KEY `Book` (`BookPin`),
   KEY `book_category` (`book_category`),
@@ -90,17 +90,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `delivery_guy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `delivery_guy` (
-  `delivery_guy_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'This is delivery guy id',
-  `delivery_guy_name` varchar(255) NOT NULL COMMENT 'This is delivery guy name',
-  `delivery_guy_email` varchar(255) NOT NULL COMMENT 'This is delivery guy email',
+  `delivery_guy_id` int NOT NULL AUTO_INCREMENT COMMENT 'This is delivery guy id',
+  `delivery_guy_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'This is delivery guy name',
+  `delivery_guy_email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'This is delivery guy email',
   `delivery_guy_dob` date NOT NULL COMMENT 'This is delivery guy date of birth',
-  `Profile_photo` varchar(70) NOT NULL,
-  `delivery_guy_address` varchar(255) NOT NULL,
-  `delivery_guy_pincode` int(255) NOT NULL COMMENT 'This is delivery guy pincode',
-  `delivery_guy_password` varchar(255) NOT NULL COMMENT 'This is delivery guy password',
-  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `Profile_photo` varchar(70) COLLATE utf8mb4_general_ci NOT NULL,
+  `delivery_guy_address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `delivery_guy_pincode` int NOT NULL COMMENT 'This is delivery guy pincode',
+  `delivery_guy_password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'This is delivery guy password',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`delivery_guy_id`),
   UNIQUE KEY `delivery_guy_email` (`delivery_guy_email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -122,13 +122,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reports` (
-  `Report_id` int(12) NOT NULL AUTO_INCREMENT,
-  `Report_msg` text NOT NULL,
-  `reporter_user` int(12) NOT NULL,
-  `reported_user` int(12) NOT NULL,
-  `report_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `Report_id` int NOT NULL AUTO_INCREMENT,
+  `Report_msg` text COLLATE utf8mb4_general_ci NOT NULL,
+  `reporter_user` int NOT NULL,
+  `reported_user` int NOT NULL,
+  `report_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Report_id`),
   KEY `reported_user` (`reported_user`),
   KEY `reporter_user` (`reporter_user`),
@@ -153,18 +153,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `user_id` int(30) NOT NULL AUTO_INCREMENT,
-  `fname` varchar(190) NOT NULL,
-  `user_name` varchar(40) NOT NULL,
-  `email` varchar(90) NOT NULL,
-  `Profile_photo` varchar(255) NOT NULL DEFAULT 'media/profile_photos/default_photo.svg',
-  `address` text NOT NULL,
-  `pincode` int(20) NOT NULL,
-  `create_date` date NOT NULL DEFAULT current_timestamp(),
-  `password` varchar(255) NOT NULL,
-  `IsRestricted` tinyint(1) NOT NULL DEFAULT 0,
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `fname` varchar(190) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(90) COLLATE utf8mb4_general_ci NOT NULL,
+  `Profile_photo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'media/profile_photos/default_photo.svg',
+  `address` text COLLATE utf8mb4_general_ci NOT NULL,
+  `pincode` int NOT NULL,
+  `create_date` date NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `IsRestricted` tinyint(1) NOT NULL DEFAULT '0',
+  `is_madarchod` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -176,7 +177,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (20,'jainil','jainil112','jainil112@gmail.com','media/profile_photos/default_photo.svg','103,ambikadham-1',37445,'2022-03-02','44c8a9219362c3a56df9eb9a3660d82d55b6b8ce',0),(29,'jainil prajapati b','sfdg','jainil@gmail.com','media/profile_photos/default_photo.svg','103,Ambikadham-1 sector-15,gandhinager',382016,'2022-03-04','1eeb65bae656479467f57b9e690549df26c12b60',1),(30,'jainil prajapati b','jk','jk@gmail.com','media/profile_photos/default_photo.svg','103,Ambikadham-1 sector-15,gandhinager',382016,'2022-03-30','1eeb65bae656479467f57b9e690549df26c12b60',0),(31,'Barbie','eibrab','barbie@gmail.com','media/profile_photos/eibrab_profilePic.jpeg','Home',382330,'2024-04-25','44c8a9219362c3a56df9eb9a3660d82d55b6b8ce',0);
+INSERT INTO `user` VALUES (20,'jainil','jainil112','jainil112@gmail.com','media/profile_photos/default_photo.svg','103,ambikadham-1',37445,'2022-03-02','44c8a9219362c3a56df9eb9a3660d82d55b6b8ce',0,NULL),(29,'jainil prajapati b','sfdg','jainil@gmail.com','media/profile_photos/default_photo.svg','103,Ambikadham-1 sector-15,gandhinager',382016,'2022-03-04','1eeb65bae656479467f57b9e690549df26c12b60',1,NULL),(30,'jainil prajapati b','jk','jk@gmail.com','media/profile_photos/default_photo.svg','103,Ambikadham-1 sector-15,gandhinager',382016,'2022-03-30','1eeb65bae656479467f57b9e690549df26c12b60',0,NULL),(31,'Barbie','eibrab','barbie@gmail.com','media/profile_photos/eibrab_profilePic.jpeg','Home',382330,'2024-04-25','44c8a9219362c3a56df9eb9a3660d82d55b6b8ce',0,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,13 +187,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usermessages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usermessages` (
-  `msgid` int(11) NOT NULL AUTO_INCREMENT,
-  `sender` int(255) NOT NULL,
-  `receiver` int(255) NOT NULL,
-  `usermsg` text NOT NULL,
-  `send_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `msgid` int NOT NULL AUTO_INCREMENT,
+  `sender` int NOT NULL,
+  `receiver` int NOT NULL,
+  `usermsg` text COLLATE utf8mb4_general_ci NOT NULL,
+  `send_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`msgid`),
   KEY `sender` (`sender`),
   KEY `receiver` (`receiver`),
@@ -217,12 +218,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `warn_user_delivery_guy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `warn_user_delivery_guy` (
-  `wanr_id` int(255) NOT NULL AUTO_INCREMENT,
-  `warn_user_id` int(255) NOT NULL,
-  `warning_message` text NOT NULL,
-  `warn_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `wanr_id` int NOT NULL AUTO_INCREMENT,
+  `warn_user_id` int NOT NULL,
+  `warning_message` text COLLATE utf8mb4_general_ci NOT NULL,
+  `warn_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`wanr_id`),
   KEY `warned_user` (`warn_user_id`),
   CONSTRAINT `warned_user` FOREIGN KEY (`warn_user_id`) REFERENCES `user` (`user_id`)
@@ -248,9 +249,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-01 22:32:04
-INSERT INTO `usermessages` VALUES();
-
-INSERT INTO `usermessages` VALUES (54,29,20,'dklhvods','2022-03-20 17:39:16');
-
-INSERT INTO `usermessages` VALUES (100,22,20,'dklhvods','2022-03-20 17:39:16');
+-- Dump completed on 2024-07-02 11:49:17
