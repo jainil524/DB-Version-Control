@@ -8,6 +8,7 @@
                             OR
                     git diff ( to get small content form file which are modified )
 
-    3) 
-
+    3) to get only file name and its label like ( D: Deleted, M: Modified, A: Appedended, U: Untracked )
+    => 
+        Command: git log --name-status
           
