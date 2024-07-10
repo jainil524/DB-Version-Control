@@ -57,6 +57,10 @@ def extract_commits():
                 commits.append(commit)
             commit = {"id": line.split(" ")[1], "message": []}
 
+        elif line.startswith("Date") and commit is not None:
+            date = line.split(":   ")[1]
+            commit["Date"] = date
+            
         elif line.startswith("Author") and commit is not None:
             author_info = line.split(" ", 2)[1:]
             commit["Author"] = {
@@ -78,7 +82,8 @@ def extract_commits():
 
 def display_commit(commit):
     print(f"Commit ID: {commit['id']}")
-    print(f"Author: {commit['Author']['name']} <{commit['Author']['email']}>")
+    print(f"Author: {commit['Author']['name']} - {commit['Author']['email']}>")
+    print(f"Date: {commit["Date"]}")
     print("Message:")
     for msg in commit["message"]:
         print(f"    {msg}")
@@ -87,12 +92,16 @@ def display_commit(commit):
 
 def main():
 
+
+
     commits = extract_commits()
-    choices = [f"{commit['id']} - {commit['Author']['name']}" for commit in commits]
+    choices = [f"{commit['message']} - {commit['Author']['name']} - {commit["Date"]}" for commit in commits]
 
     while True:
         choice = questionary.select(
-            "Choose a commit to display:", choices=choices
+            "Choose a commit to display:", 
+            choices=choices,
+            instruction="Use the arrow keys to navigate, press Enter to select",
         ).ask()
 
         if choice is None:
@@ -100,6 +109,7 @@ def main():
 
         selected_commit = commits[choices.index(choice)]
         display_commit(selected_commit)
+        break
 
 
 if __name__ == "__main__":
