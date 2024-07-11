@@ -1,1 +1,0 @@
-INSERT INTO `delivery_guy` VALUES (1,'kishan','kishan118@gmail.com','0000-00-00','','rfbg vsvfbevf ',235542,'',1),(2,'jainil prajapati b','ramu@celaeno.com','0000-00-00','',' df fdvwd fvc',588727,'1eeb65bae656479467f57b9e690549df26c12b60',1);
