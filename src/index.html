@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DB Version Control Installation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>DB Version Control Installation</h1>
+  </header>
+  <main>
+    <div id="step1" class="step active">
+      <h2>Step 1: Sign Agreement</h2>
+      <div class="agreement">
+        <p></p>
+      </div>
+      <label>
+        <input type="checkbox" id="agree"> I agree to the terms and conditions
+      </label>
+      <div class="buttons">
+        <button id="next1" disabled>Next</button>
+      </div>
+    </div>
+    <div id="step2" class="step">
+      <h2>Step 2: Select Database</h2>
+      <p>Select the databases you prefer the most from the installed ones.</p>
+      <!-- Add your database selection logic here -->
+      <div class="buttons">
+        <button id="back2">Back</button>
+        <button id="next2">Next</button>
+      </div>
+    </div>
+    <div id="step3" class="step">
+      <h2>Step 3: Set Path</h2>
+      <p>Set the path for the selected database system to be accessed globally.</p>
+      <!-- Add your path setting logic here -->
+      <div class="buttons">
+        <button id="back3">Back</button>
+        <button id="next3">Next</button>
+      </div>
+    </div>
+    <div id="step4" class="step">
+      <h2>Step 4: Configure Access Privileges</h2>
+      <form id="privileges-form">
+        <p>Select the type of access:</p>
+        <label>
+          <input type="radio" name="accessType" value="simple" checked> Simple
+        </label>
+        <label>
+          <input type="radio" name="accessType" value="custom"> Custom/Advanced
+        </label>
+        <div id="simple-access" class="access-settings">
+          <label>Enter admin username:
+            <input type="text" id="simple-username" placeholder="Admin username">
+          </label>
+          <label>Enter admin password:
+            <input type="password" id="simple-password" placeholder="Admin password">
+          </label>
+        </div>
+        <div id="custom-access" class="access-settings" style="display:none;">
+          <label>Create a new user with permissions:</label>
+          <label>Username:
+            <input type="text" id="custom-username" placeholder="New username">
+          </label>
+          <label>Password:
+            <input type="password" id="custom-password" placeholder="New password">
+          </label>
+          <label>Permissions (comma separated):
+            <input type="text" id="custom-permissions" placeholder="e.g., SELECT, INSERT, UPDATE">
+          </label>
+        </div>
+        <div class="buttons">
+          <button type="button" id="back4">Back</button>
+          <button type="submit" id="finish">Finish</button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="renderer.js"></script>
+</body>
+</html>

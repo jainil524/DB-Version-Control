@@ -1,49 +1,62 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
+const sudo = require('sudo-prompt');
+const os = require('os');
 
-function createWindow () {
+function createWindow() {
+  console.log('Creating window');
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'src/preload.js'),
       nodeIntegration: true,
-      contextIsolation: false
-    }
+      contextIsolation: true,
+      devTools: false,
+    },
   });
 
-  win.loadFile('index.html');
+  win.loadFile('src/index.html');
 }
 
 app.whenReady().then(() => {
-  createWindow();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
+  if (!isAdmin()) {
+    requestAdminPrivileges();
+  } else {
+    createWindow();
+  }
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
-// Handle IPC requests here
-ipcMain.handle('accept-agreement', async (event, args) => {
-  // Handle acceptance of terms and conditions
-  return true;
-});
+function isAdmin() {
+  if (os.platform() === 'win32') {
+    const cp = require('child_process');
+    try {
+      cp.execSync('net session', { stdio: 'ignore' });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  } else {
+    return process.getuid && process.getuid() === 0;
+  }
+}
 
-ipcMain.handle('select-database', async (event, args) => {
-  // Handle database selection
-  return true;
-});
+function requestAdminPrivileges() {
+  const options = {
+    name: 'DB Version Control',
+    icns: '/path/to/icns' // For MacOS
+  };
 
-ipcMain.handle('set-path', async (event, args) => {
-  // Handle path setting
-  return true;
-});
-
-ipcMain.handle('configure-git', async (event, args) => {
-  // Handle Git configuration
-  return true;
-});
+  sudo.exec(`"${process.execPath}" "${process.argv.slice(1).join('" "')}"`, options, (error, stdout, stderr) => {
+    if (error) {
+      dialog.showErrorBox('Elevation Error', 'Failed to obtain admin privileges');
+      app.quit();
+    }
+  });
+}
