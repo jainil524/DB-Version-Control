@@ -61,4 +61,4 @@ DATABASE_NAME ====> (Folder)
 TODOs
 ====================
 1) Discuss about what tech will be used in backend ( for efficiency purpose )
-2) 
+2) Discuss how to get back to previous commit ( Major Issue )
