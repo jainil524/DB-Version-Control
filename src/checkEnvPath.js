@@ -1,8 +1,5 @@
-const findDBMS = require('./findDBMS');
-const { exec } = require('child_process');
-const path = require('path');
+const { execSync,exec } = require('child_process');
 const os = require('os');
-const fs = require('fs');
 
 // Function to create radio buttons for detected DBMS software
 function createDBMSOptions(dbmsList) {
@@ -33,117 +30,86 @@ function createDBMSOptions(dbmsList) {
     });
 }
 
-
 // Function to find software path
 function findSoftwarePath(softwareName) {
-    let path = '';
-    
-    if(softwareName === 'MySQL') {
-        exec(`dir "\*mysql.exe*" /S`, (error, stdout, stderr) => {
-            if (error || stderr) {
-                console.error(error || stderr);
-                alert(`Failed to find the path for ${softwareName}. Please set it manually.`);
-                return;
-            }
-            stdout.split('\n').forEach(line => {
-                if (line.includes('bin')) {
-                    path = line.split(' ')[2];
-                }
-            });
-        });
+    let stdout;
+    if (softwareName === 'MySQL') {
+        stdout = execSync('dir "\*mysql.exe*" /s /B', { encoding: 'utf8' });
+    } else if (softwareName === 'PostgreSQL') {
+        stdout = execSync('dir "\*psql.exe* /s /B', { encoding: 'utf8' });
+    } else if (softwareName === 'MongoDB') {
+        stdout = execSync('dir "\*mongod.exe*" /s /B', { encoding: 'utf8' });
+    } else {
+        throw new Error(`Unsupported software: ${softwareName}`);
     }
-    else if(softwareName === 'PostgreSQL') {
-        exec(`dir "\*psql.exe*" /S`, (error, stdout, stderr) => {
-            if (error || stderr) {
-                console.error(error || stderr);
-                alert(`Failed to find the path for ${softwareName}. Please set it manually.`);
-                return;
+
+    try {
+        let path = '';
+
+        stdout.split('\n').forEach(line => {
+            if (line.includes('bin')) {
+                path = line.split(' ')[2];
             }
-            stdout.split('\n').forEach(line => {
-                if (line.includes('bin')) {
-                    path = line.split(' ')[2];
-                }
-            });
         });
 
-    }else if(softwareName === 'MongoDB') {
-        exec(`dir "\*mongod.exe*" /S`, (error, stdout, stderr) => {
-            if (error || stderr) {
-                console.error(error || stderr);
-                alert(`Failed to find the path for ${softwareName}. Please set it manually.`);
-                return;
-            }
-            stdout.split('\n').forEach(line => {
-                if (line.includes('bin')) {
-                    path = line.split(' ')[2];
-                }
-            });
-        });
+        if (path) {
+            return path;
+        } else {
+            throw new Error(`Path not found for ${softwareName}`);
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error(`Failed to find the path for ${softwareName}. ${error.message}`);
     }
-    // Add more else if statements for other software
-
-    return path;
 }
 
 // Function to find the binary location and set it to the PATH variable
-function setEnvVariable(dbms, binPath) {
+function setEnvVariable(dbms) {
     const platform = os.platform();
+    
+    try {
+        const envPath = findSoftwarePath(dbms);
 
-    const envPath = findSoftwarePath(dbms);
+        console.log(envPath);
 
-    console.log(envPath);
-
-    if (platform === 'win32') {
-        exec(`setx /m PATH "${envPath};%PATH%"`, (error, stdout, stderr) => {
-            if (error || stderr) {
-                console.error(error || stderr);
-                alert(`Failed to set PATH for ${dbms}. Please set it manually.`);
-                return;
-            }
+        if (platform === 'win32') {
+            execSync(`setx /m PATH "${envPath};%PATH%"`);
             alert(`PATH set successfully for ${dbms}. Please restart the application.`);
-        });
-    } else {
-        const shellProfile = platform === 'darwin' ? '.zshrc' : '.bashrc';
-        const profilePath = path.join(os.homedir(), shellProfile);
-        const exportCmd = `export PATH="${envPath}:${binPath}"`;
+        } else {
+            const shellProfile = platform === 'darwin' ? '.zshrc' : '.bashrc';
+            const profilePath = path.join(os.homedir(), shellProfile);
+            const exportCmd = `export PATH="${envPath}:%PATH%"`;
 
-        fs.appendFile(profilePath, `\n${exportCmd}\n`, (err) => {
-            if (err) {
-                alert(`Failed to set PATH for ${dbms}. Please set it manually.`);
-                return;
-            }
+            fs.appendFileSync(profilePath, `\n${exportCmd}\n`);
             alert(`PATH set successfully for ${dbms}. Please restart the terminal.`);
-        });
+        }
+    } catch (error) {
+        console.error(error);
+        alert(`Error: ${error.message}`);
     }
 }
 
 // Function to check environment variables
 function checkEnvVariable(dbms) {
-    let command, binPath;
+    let command;
     switch (dbms) {
         case 'MySQL':
             command = 'mysql --version';
-            binPath = '/usr/local/mysql/bin';
             break;
         case 'PostgreSQL':
             command = 'psql --version';
-            binPath = '/usr/local/pgsql/bin';
             break;
         case 'MongoDB':
-            command = 'mysql --version';
-            binPath = '/usr/local/bin';
+            command = 'mongod --version';
             break;
         case 'SQLite':
             command = 'sqlite3 --version';
-            binPath = '/usr/bin';
             break;
         case 'Oracle':
             command = 'sqlplus -version';
-            binPath = '/usr/local/bin';
             break;
         case 'Microsoft SQL Server':
             command = 'sqlcmd -?';
-            binPath = 'C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\130\\Tools\\Binn\\';
             break;
         default:
             console.error('Unsupported DBMS');
@@ -154,7 +120,7 @@ function checkEnvVariable(dbms) {
         if (error || stderr) {
             const userResponse = confirm(`Environment variable for ${dbms} not set. Do you want to set it now?`);
             if (userResponse) {
-                setEnvVariable(dbms, binPath);
+                setEnvVariable(dbms);
             } else {
                 alert(`Without setting the environment variable, the application may not work properly.`);
             }
@@ -163,5 +129,4 @@ function checkEnvVariable(dbms) {
         alert(`Environment variable for ${dbms} is set.\n${stdout}`);
     });
 }
-
 module.exports = { createDBMSOptions };
