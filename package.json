@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "marked": "^13.0.2",
+    "node-run-cmd": "^1.0.1",
     "sudo-prompt": "^9.2.1"
   }
 }

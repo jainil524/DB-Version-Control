@@ -1,5 +1,8 @@
-const { execSync,exec } = require('child_process');
+const { execSync, exec } = require('child_process');
+const nrc = require('node-run-cmd');
 const os = require('os');
+const path = require('path');
+const fs = require('fs');
 
 // Function to create radio buttons for detected DBMS software
 function createDBMSOptions(dbmsList) {
@@ -11,8 +14,8 @@ function createDBMSOptions(dbmsList) {
         radio.value = dbms;
         radio.id = dbms;
 
-        radio.addEventListener('change', () => {
-            checkEnvVariable(dbms);
+        radio.addEventListener('change', async () => {
+            await checkEnvVariable(dbms);
         });
 
         const label = document.createElement('label');
@@ -26,19 +29,23 @@ function createDBMSOptions(dbmsList) {
         dbmsContainer.appendChild(br);
 
         console.log(dbms);
-
     });
 }
 
 // Function to find software path
-function findSoftwarePath(softwareName) {
+async function findSoftwarePath(softwareName) {
     let stdout;
+    var doneCallback = function(code) {
+        stdout = code;
+        console.log(stdout);
+      };
+      
     if (softwareName === 'MySQL') {
-        stdout = execSync('dir "\*mysql.exe*" /s /B', { encoding: 'utf8' });
+        await nrc.run('cmd /c dir "C:\\Program Files\\*mysql.exe*" /s /B', { onDone: doneCallback });
     } else if (softwareName === 'PostgreSQL') {
-        stdout = execSync('dir "\*psql.exe* /s /B', { encoding: 'utf8' });
+        await nrc.run('cmd /c dir "C:\\Program Files\\*psql.exe*" /s /B', { onDone: doneCallback });
     } else if (softwareName === 'MongoDB') {
-        stdout = execSync('dir "\*mongod.exe*" /s /B', { encoding: 'utf8' });
+        await nrc.run('cmd /c dir "C:\\Program Files\\*mongod.exe*" /s /B', { onDone: doneCallback });
     } else {
         throw new Error(`Unsupported software: ${softwareName}`);
     }
@@ -48,7 +55,13 @@ function findSoftwarePath(softwareName) {
 
         stdout.split('\n').forEach(line => {
             if (line.includes('bin')) {
-                path = line.split(' ')[2];
+                if (softwareName === "MySQL" && line.includes("MySQL Server")) {
+                    path = line.split('bin')[0] + 'bin';
+                } else if (line.includes("xampp")) {
+                    path = line.split('bin')[0] + 'bin';
+                } else {
+                    path = line.split('bin')[0] + 'bin';
+                }
             }
         });
 
@@ -64,11 +77,11 @@ function findSoftwarePath(softwareName) {
 }
 
 // Function to find the binary location and set it to the PATH variable
-function setEnvVariable(dbms) {
+async function setEnvVariable(dbms) {
     const platform = os.platform();
-    
+
     try {
-        const envPath = findSoftwarePath(dbms);
+        const envPath = await findSoftwarePath(dbms);
 
         console.log(envPath);
 
@@ -90,7 +103,7 @@ function setEnvVariable(dbms) {
 }
 
 // Function to check environment variables
-function checkEnvVariable(dbms) {
+async function checkEnvVariable(dbms) {
     let command;
     switch (dbms) {
         case 'MySQL':
@@ -129,4 +142,5 @@ function checkEnvVariable(dbms) {
         alert(`Environment variable for ${dbms} is set.\n${stdout}`);
     });
 }
+
 module.exports = { createDBMSOptions };
