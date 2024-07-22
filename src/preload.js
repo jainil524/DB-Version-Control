@@ -1,10 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
+const { exec } = require('child_process');
+
+const { findDBMS } = require('./findDBMS');
+const { createDBMSOptions } = require('./checkEnvPath');
 
 // Set options for marked
 
 window.addEventListener('DOMContentLoaded', () => {
+  const dbmsContainer = document.getElementById('dbms-container');
+
   const termdiv = document.querySelector("#step1 p");
 
   async function getfileContent() {
@@ -18,76 +24,21 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-
-
   getfileContent();
-});
 
-const { exec } = require('child_process');
-const os = require('os');
-
-const TIMEOUT = 10000; // 10 seconds timeout
-
-// Function to identify installed DBMS software
-function findDBMS(callback) {
-  const platform = os.platform();
-  let command;
-
-  // Choose the appropriate command based on the OS
-  switch (platform) {
-    case 'win32':
-      command = 'wmic product get name';
-      break;
-    case 'linux':
-      command = 'dpkg -l | grep -iE "mysql|postgresql|mongodb|sqlite|oracle|sqlserver"';
-      break;
-    case 'darwin':
-      command = 'brew list | grep -iE "mysql|postgresql|mongodb|sqlite|oracle|sqlserver"';
-      break;
-    default:
-      callback(new Error('Unsupported OS'));
-      return;
-  }
-
-  // Execute the command with a timeout
-  const execOptions = { timeout: TIMEOUT };
-  exec(command, execOptions, (error, stdout, stderr) => {
+  // Find DBMS and create options
+  findDBMS((error, dbmsList) => {
     if (error) {
-      callback(error);
+      console.error('Error detecting DBMS software:', error);
       return;
     }
-    if (stderr) {
-      callback(new Error(stderr));
-      return;
+    if (dbmsList.length === 0) {
+      dbmsContainer.textContent = 'No DBMS software detected.';
+    } else {
+      createDBMSOptions(dbmsList);
     }
-
-    // Parse the output to find common DBMS software
-    const dbmsSoftware = [
-      'MySQL',
-      'PostgreSQL',
-      'MongoDB',
-      'SQLite',
-      'Oracle',
-      'Microsoft SQL Server'
-    ];
-
-    const installedSoftware = stdout.split('\n');
-    const detectedDBMS = dbmsSoftware.filter(dbms =>
-      installedSoftware.some(software => software.toLowerCase().includes(dbms.toLowerCase()))
-    );
-
-    callback(null, detectedDBMS);
   });
-}
 
-// Usage example
-findDBMS((error, dbmsList) => {
-  if (error) {
-    console.error('Error detecting DBMS software:', error);
-  } else if (dbmsList.length === 0) {
-    console.log('No DBMS software detected.');
-  } else {
-    document.querySelector(".databases").innerHTML = dbmsList.join(', ');
-  }
+
+
 });
-
