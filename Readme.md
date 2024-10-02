@@ -1,46 +1,37 @@
-📚 Database Version Control System (Ongoing Project)
+# 📚 Database Version Control System (Ongoing Project) 
 
-    
+![Project Status](https://img.shields.io/badge/status-ongoing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Contributions](https://img.shields.io/badge/contributions-welcome-orange)
+![Database](https://img.shields.io/badge/database-postgres%20%7C%20mysql%20%7C%20sqlite-yellow)
+![Python](https://img.shields.io/badge/python-3.x-blue)
 
-🎯 Project Overview
+## 🎯 Project Overview
 
-This Database Version Control System is designed to handle the complexities of database schema and data changes with features inspired by Git. It ensures smooth collaboration across teams, simplifies database management, and integrates seamlessly with existing CI/CD pipelines.
+This **Database Version Control System** is designed to handle the complexities of database schema and data changes with features inspired by Git. It ensures smooth collaboration across teams, simplifies database management, and integrates seamlessly with existing CI/CD pipelines.
 
-Features:
+**Features**:
+- 📝 **Version Control**: Track changes to database schemas and data.
+- 🔀 **Branching & Merging**: Support for parallel development and merging of changes.
+- ⏪ **Rollback**: Easy rollback to previous database states.
+- 🚀 **CI/CD Integration**: Automate database migrations in the development pipeline.
+- 🛠️ **Custom Migration Scripts**: Support for user-defined scripts for changes and rollbacks.
 
-📝 Version Control: Track changes to database schemas and data.
+> **Note**: This project is currently in progress, with more features and improvements coming soon!
 
-🔀 Branching & Merging: Support for parallel development and merging of changes.
+## 💻 Tech Stack
 
-⏪ Rollback: Easy rollback to previous database states.
+- **Languages**: Python
+- **Databases**: PostgreSQL | MySQL | SQLite
+- **Tools**: SQLAlchemy, Alembic (for migrations)
+- **Version Control**: Git
 
-🚀 CI/CD Integration: Automate database migrations in the development pipeline.
-
-🛠️ Custom Migration Scripts: Support for user-defined scripts for changes and rollbacks.
-
-
-> Note: This project is currently in progress, with more features and improvements coming soon!
-
-
-
-💻 Tech Stack
-
-Languages: Python
-
-Databases: PostgreSQL | MySQL | SQLite
-
-Tools: SQLAlchemy, Alembic (for migrations)
-
-Version Control: Git
-
-
-📦 Installation
+## 📦 Installation
 
 1. Clone the repository:
-
-git clone https://github.com/your-username/db-version-control.git
-cd db-version-control
-
+   ```bash
+   git clone https://github.com/your-username/db-version-control.git
+   cd db-version-control
 
 2. Set up a virtual environment and install dependencies:
 
