@@ -33,36 +33,44 @@ The **Database Version Control App** is an ongoing project designed to manage da
 - **Alembic**: Tool for handling migrations.
 - **Databases**: PostgreSQL | MySQL | SQLite.
 
-## 🛠️ Project Setup
+## 🛠️ Project Workflow
 
-### 1. Clone the repository
+### 1. **Install the Project on Your System**
 
-```bash
-git clone https://github.com/yourusername/db-version-control.git
-cd db-version-control
-```
+- Clone the repository and set up the project on your local machine as described in the project setup section.
+- Ensure you have the necessary dependencies installed and a compatible DBMS (PostgreSQL, MySQL, SQLite, etc.) running.
 
-### 2. Install dependencies
+### 2. **Create a New Project for Your DBMS**
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
+- Once the project is installed, create a new project with the database management system (DBMS) you're using.
+- The system will automatically generate a repository for your database, tracking changes from the initial state.
 
-### 3. Configure `.env` for Database Connection
+### 3. **User & Permissions Configuration**
 
-Create and configure your `.env` file for database connections:
+- You must **create a dedicated user** for the system, assigning specific permissions so that the system can read and create `.sql` files from the current database state.
+  - **Security Option**: The user creation step is recommended for those who want stricter security over their database, allowing you to provide limited permissions.
+  - **Admin Option**: Alternatively, if data privacy isn't a concern, or for educational use, you can give the system admin/root user credentials, making setup quicker and easier for students or casual users.
 
-```env
-DATABASE_URL=postgresql://user:password@localhost/dbname
-```
+> **Note**: User creation is a mandatory part for security-conscious users, but our system also works with full admin credentials for those who prefer simplicity.
 
-### 4. Apply Initial Migrations
+### 4. **Select Versioning Mode**
 
-```bash
-alembic upgrade head
-```
+- The system provides two modes of version control for flexibility:
+  - **Manual Mode**: The user is responsible for committing changes whenever they modify the database.
+  - **Automatic Mode**: The system automatically monitors database changes at regular intervals and commits those changes if detected.
+
+### 5. **Versioning Options**
+
+- During setup, the user can choose between two versioning options:
+  - **Structure Only**: Track changes made only to the database schema (table structure, indices, etc.).
+  - **Structure + Data**: Track changes to both the schema and the data, allowing for full restoration of previous database states.
+
+### 6. **Working with the System**
+
+- After the initial setup, the user can continue their regular tasks without worrying about database version control. The system will track all schema and/or data changes as specified.
+- **Version History**: At any time, the user can view the current version or revert to any past version via the interface, similar to how GitHub provides version history and commit logs for code.
+
+> In essence, our system acts as **Git** for databases, and users can interact with it just like they would interact with **GitHub** for version control, with full visibility of changes and the ability to manage versions of their database seamlessly.
 
 ## 🚀 Usage
 
@@ -120,10 +128,20 @@ python main.py merge <branch_name>
 
 ```mermaid
 graph TD;
-  User-->CommitChanges[Commit Schema Changes]
-  CommitChanges-->MigrationScripts[Apply Migration Scripts]
-  MigrationScripts-->Branching[Merged/Branching]
-  Branching-->Rollback[Rollback if necessary]
+    A[Install the Project on the System] --> B[Create a Project with DBMS];
+    B --> C[Create a User for Permissions];
+    C --> D{Select Versioning Mode};
+    D --> D1[Manual Mode: User Commits Changes];
+    D --> D2[Automatic Mode: System Commits Changes Automatically];
+    D1 --> E{Choose Versioning Option};
+    D2 --> E;
+    E --> E1[Structure Only];
+    E --> E2[Structure + Data];
+    E1 --> F[Continue Working & Monitor Versions];
+    E2 --> F;
+    F --> G[Check & Interact with Current or Past Versions];
+    G --> H[Database Version Control Complete];
+
 ```
 
 1. User commits schema/data changes.
