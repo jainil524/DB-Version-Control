@@ -1,4 +1,4 @@
-# 🗃️ Database Version Control App
+# 🗃️ Database Version Control App ( On Going )
 
 ## Tags
 - **Database Management**
@@ -14,7 +14,7 @@
 - **Alembic**
 - **PostgreSQL/MySQL/SQLite**
 
-The **Database Version Control App** is a comprehensive tool designed to manage database schema changes and version control, similar to Git. It supports features like branching, merging, and rollbacks, helping teams work collaboratively on databases without conflicting changes.
+The **Database Version Control App** is an ongoing project designed to manage database schema changes and version control in a manner similar to Git. It supports features like branching, merging, and rollbacks, helping teams work collaboratively on databases without conflicting changes.
 
 ## ✨ Features
 
@@ -24,7 +24,7 @@ The **Database Version Control App** is a comprehensive tool designed to manage 
 - **CI/CD Integration**: Automated database migrations that fit into development pipelines.
 - **Custom Migration Scripts**: Users can create their own migration scripts for added flexibility.
 
-> **Status**: Ongoing project with more features coming soon!
+> **Status**: Ongoing project with regular updates and improvements.
 
 ## 🚀 Technologies Used
 
@@ -202,3 +202,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 **✨ Ongoing Project**: Stay tuned for more features and improvements!
+
+---
+
+Be sure to replace the placeholder links and add any screenshots or graphics as you progress. Let me know if you'd like any additional modifications!
